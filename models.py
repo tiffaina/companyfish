@@ -6,6 +6,7 @@
    Brown CS142, Spring 2020
 '''
 import random
+import math
 import numpy as np
 
 
@@ -53,7 +54,34 @@ class LogisticRegression:
         @return:
             num_epochs: integer representing the number of epochs taken to reach convergence
         '''
-        # TODO
+
+        w = self.weights 
+        a = self.alpha
+        b = self.batch_size
+        epoch = 1
+        converge = False 
+        while not converge:
+            ind = np.arange(Y.size)
+            np.shuffle(ind)
+            for i in rangenp.ceil((X.shape[0]/b)-1): 
+                x_b = X[i*b: (i+1)*b,:]
+                y_b = Y[i*b: (i+1)*b]
+                L_w = np.zeros((self.n_classes, self.n_features + 1))
+                
+                for x,y in x_b, y_b: 
+                    for j in [self.n_classes+1]:
+                        if y == j:
+                            L_w += (softmax(w @ x)*j) - 1 * x
+                        else:
+                            L_w += softmax(w @ x)*j * x
+                w = w - (a*L_w)/len(x_b)
+            if epoch ==1:
+                if (abs(loss(x,y)- math.inf)< self.conv_threshold): converge = True
+            else:
+                if (abs(loss(x,y)- loss(x,y)) < self.conv_threshold): converge = True #epoch specific?
+
+
+
         pass
 
     def loss(self, X, Y):
@@ -77,7 +105,8 @@ class LogisticRegression:
         @return:
             A 1D Numpy array with one element for each row in X containing the predicted class.
         '''
-        # TODO
+        y = np.zeros(X.shape[0])
+        y = X.transpose @ self.weights
         pass
 
     def accuracy(self, X, Y):
